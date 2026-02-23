@@ -168,10 +168,24 @@ else:
                 
                 # Show detection image
                 st.image(annotated_img_rgb, use_container_width=True)
+                
+                # Download Button
+                result_img = Image.fromarray(annotated_img_rgb)
+                import io
+                buf = io.BytesIO()
+                result_img.save(buf, format="PNG")
+                byte_im = buf.getvalue()
+                
+                st.download_button(
+                    label="📥 Download Annotated Image",
+                    data=byte_im,
+                    file_name="detected_defects.png",
+                    mime="image/png",
+                )
         
         # Detection Details
         st.markdown('<div class="prediction-card">', unsafe_allow_html=True)
-        st.markdown("### Summary")
+        st.markdown("### 📊 Detection Summary")
         
         num_defects = len(result.boxes)
         
@@ -189,6 +203,10 @@ else:
             st.write("#### Classification Breakdown:")
             for cls_name, count in class_counts.items():
                 st.write(f"- **{cls_name}**: {count}")
+            
+            # Detailed Box Info (Optional)
+            with st.expander("Show Raw Detection Data"):
+                st.write(result.boxes.data)
         else:
             st.info("No defects detected in this image at the current confidence threshold.")
             
