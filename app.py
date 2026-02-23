@@ -5,10 +5,16 @@ import numpy as np
 import cv2
 import os
 
+# Fix for Streamlit Cloud non-writable directory
+os.environ['YOLO_CONFIG_DIR'] = '/tmp'
+
+# Logo path
+LOGO_PATH = "aerolenslogo.png"
+
 # Page configuration
 st.set_page_config(
-    page_title="AeroLens | Wind Turbine Defect Detection",
-    page_icon="🌬️",
+    page_title="AeroLens.ai | Wind Turbine Defect Detection",
+    page_icon=Image.open(LOGO_PATH) if os.path.exists(LOGO_PATH) else "🌬️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -18,50 +24,70 @@ st.markdown("""
     <style>
     /* Main Background */
     .stApp {
-        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
         color: #ffffff;
     }
 
     /* Sidebar */
     [data-testid="stSidebar"] {
-        background-color: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
+        background-color: rgba(15, 52, 96, 0.4) !important;
+        backdrop-filter: blur(15px);
         border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Sidebar Widgets */
+    .stSelectbox, .stSlider {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
     }
 
     /* Header Styling */
     .main-header {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Outfit', sans-serif;
         font-weight: 800;
-        font-size: 3rem;
-        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        font-size: 4rem;
+        background: linear-gradient(120deg, #00d2ff 0%, #9face6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.1rem;
+        letter-spacing: -1px;
+    }
+
+    .sub-title {
+        color: #00d2ff;
+        font-weight: 600;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
     }
 
     .sub-header {
         font-family: 'Inter', sans-serif;
         font-weight: 300;
-        font-size: 1.2rem;
-        color: #a0aec0;
-        margin-bottom: 2rem;
+        font-size: 1.1rem;
+        color: #94a3b8;
+        margin-bottom: 2.5rem;
+        max-width: 600px;
     }
 
     /* Card Styling for Results */
     .prediction-card {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 15px;
-        padding: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        margin-top: 20px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 20px;
+        padding: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        margin-top: 25px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
 
     /* File Uploader Customization */
     .stFileUploader section {
-        background-color: rgba(255, 255, 255, 0.02) !important;
-        border: 2px dashed rgba(0, 210, 255, 0.3) !important;
-        border-radius: 10px !important;
+        background-color: rgba(255, 255, 255, 0.01) !important;
+        border: 2px dashed rgba(0, 210, 255, 0.5) !important;
+        border-radius: 15px !important;
+        padding: 2rem !important;
     }
 
     /* Button Styling */
@@ -69,47 +95,68 @@ st.markdown("""
         background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
         color: white;
         border: none;
-        border-radius: 8px;
-        padding: 0.6rem 2rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
+        border-radius: 12px;
+        padding: 0.8rem 2.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        width: 100%;
     }
 
     .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
+        transform: scale(1.02);
+        box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
     }
     
     /* Metrics */
     [data-testid="stMetricValue"] {
         color: #00d2ff;
+        font-size: 2.5rem !important;
     }
+
+    /* Center Logo */
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+
+    /* Hide Streamlit Menu and Footer */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
 
 # Sidebar Configuration
 with st.sidebar:
-    st.image("https://img.icons8.com/isometric-line/100/ffffff/wind-turbine.png", width=100)
-    st.title("Settings")
+    if os.path.exists(LOGO_PATH):
+        st.image(LOGO_PATH, use_container_width=True)
+    else:
+        st.image("https://img.icons8.com/isometric-line/100/ffffff/wind-turbine.png", width=100)
     
+    st.markdown("<h2 style='text-align: center; color: white;'>Navigation</h2>", unsafe_allow_html=True)
     st.markdown("---")
     
+    st.markdown("### ⚙️ Engine Settings")
     model_path = st.selectbox(
-        "Select Model Weight",
+        "Model Weights",
         ["best.pt", "last.pt", "best.onnx"],
         index=0
     )
     
-    conf_threshold = st.slider("Confidence Threshold", 0.1, 1.0, 0.25, 0.05)
-    iou_threshold = st.slider("IOU Threshold", 0.1, 1.0, 0.45, 0.05)
+    conf_threshold = st.slider("Confidence", 0.1, 1.0, 0.25, 0.05)
+    iou_threshold = st.slider("IOU Filter", 0.1, 1.0, 0.45, 0.05)
     
     st.markdown("---")
-    st.markdown("### Model Info")
-    st.info("Upload the `best.pt` file to the project root directory to enable detection.")
+    st.markdown("### ℹ️ App Information")
+    st.info("AeroLens.ai uses YOLOv8 for sub-millimeter precision in defect identification.")
 
 # Main Page Design
-st.markdown('<h1 class="main-header">AeroLens AI</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Wind Turbine Defect Detection System</p>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">AeroLens.ai</h1>', unsafe_allow_html=True)
+st.markdown('<p class="sub-title">Intelligent Wind Turbine Inspection</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Harnessing advanced computer vision to ensure the structural integrity and efficiency of renewable energy infrastructure.</p>', unsafe_allow_html=True)
 
 # Load Model
 @st.cache_resource
