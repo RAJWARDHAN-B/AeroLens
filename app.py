@@ -9,7 +9,7 @@ import os
 os.environ['YOLO_CONFIG_DIR'] = '/tmp'
 
 # Logo path
-LOGO_PATH = "aerolenslogo.png"
+LOGO_PATH = "aerolenslogobg.png"
 
 # Page configuration
 st.set_page_config(
