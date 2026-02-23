@@ -94,6 +94,53 @@ st.markdown("""
         margin-bottom: 8px !important;
     }
 
+    /* Enhanced File Uploader */
+    [data-testid="stFileUploader"] {
+        background-color: rgba(255, 255, 255, 0.03);
+        border: 2px dashed rgba(0, 210, 255, 0.3);
+        border-radius: 15px;
+        padding: 2.5rem;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+    }
+
+    [data-testid="stFileUploader"]:hover {
+        border-color: #00d2ff;
+        background-color: rgba(0, 210, 255, 0.05);
+        box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+    }
+
+    [data-testid="stFileUploader"] section {
+        background-color: transparent !important;
+    }
+    
+    /* Browse Files Button */
+    [data-testid="stFileUploader"] button {
+        background-color: #00d2ff !important;
+        color: #0f172a !important;
+        font-weight: 700 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    [data-testid="stFileUploader"] button:hover {
+        transform: scale(1.05);
+        background-color: #ffffff !important;
+    }
+
+    /* File Uploader Text Legibility */
+    [data-testid="stFileUploader"] section div {
+        color: #ffffff !important;
+        font-weight: 500 !important;
+    }
+    
+    [data-testid="stFileUploader"] section small {
+        color: #94a3b8 !important;
+        font-weight: 400 !important;
+    }
+
     /* Selectbox & Input Text */
     .stSelectbox div[data-baseweb="select"] > div {
         color: #ffffff !important;
@@ -104,11 +151,6 @@ st.markdown("""
     [data-testid="stThumbValue"] {
         color: #00d2ff !important;
         font-weight: 700 !important;
-    }
-
-    /* File Uploader Text */
-    [data-testid="stFileUploader"] section div {
-        color: #cbd5e1 !important;
     }
     
     /* Metrics */
@@ -159,11 +201,33 @@ st.markdown("""
         color: #ffffff !important;
     }
 
-    /* Center Logo */
-    .logo-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 2rem;
+    /* Download Button Styling */
+    .stDownloadButton button {
+        width: 100% !important;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%) !important;
+        color: white !important;
+        border-radius: 8px !important;
+        border: none !important;
+        padding: 0.5rem 1rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .stDownloadButton button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(0, 210, 255, 0.4) !important;
+        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%) !important;
+    }
+
+    /* Cards and Containers */
+    .prediction-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-top: 2rem;
+        backdrop-filter: blur(10px);
     }
 
     /* Hide Streamlit Menu and Footer */
@@ -308,7 +372,7 @@ st.markdown("---")
 st.markdown(
     """
     <div style="text-align: center; color: #718096; font-size: 0.8rem;">
-        Developed for Wind Turbine Maintenance & Safety | AeroLens AI 2024
+        Developed for Wind Turbine Maintenance & Safety | AeroLens AI 2026
     </div>
     """, 
     unsafe_allow_html=True
