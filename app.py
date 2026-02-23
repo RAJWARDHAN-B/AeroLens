@@ -30,17 +30,100 @@ st.markdown("""
 
     /* Sidebar */
     [data-testid="stSidebar"] {
-        background-color: rgba(15, 52, 96, 0.4) !important;
-        backdrop-filter: blur(15px);
+        background-color: #0f172a !important; /* Deeper, more solid background */
         border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    /* Sidebar Widgets */
-    .stSelectbox, .stSlider {
-        background: rgba(255, 255, 255, 0.03);
-        padding: 10px;
-        border-radius: 10px;
-        margin-bottom: 10px;
+    /* Sidebar Text & Labels */
+    [data-testid="stSidebar"] .stMarkdown p, 
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] .stSelectbox label,
+    [data-testid="stSidebar"] .stSlider label {
+        color: #f8fafc !important; /* Ultra-bright white for labels */
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+    }
+
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3 {
+        color: #00d2ff !important;
+    }
+
+    /* Sidebar Widgets Styling */
+    .stSelectbox > div > div, .stSlider > div {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+    }
+
+    /* Sidebar Info Box */
+    [data-testid="stSidebar"] .stAlert {
+        background-color: rgba(0, 210, 255, 0.1);
+        color: #e2e8f0;
+        border: 1px solid rgba(0, 210, 255, 0.2);
+    }
+
+    /* Header Styling */
+    .main-header {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        font-size: 4rem;
+        background: linear-gradient(120deg, #00d2ff 0%, #9face6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.1rem;
+        letter-spacing: -1px;
+    }
+
+    /* GLOBAL TEXT COLOR - FORCE ALL TO READABLE WHITE/SLATE */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="sidebar-content"] {
+        color: #ffffff !important;
+        font-family: 'Inter', sans-serif !important;
+    }
+
+    /* Force all headings and standard text */
+    h1, h2, h3, h4, h5, h6, p, li, span, small {
+        color: #ffffff !important;
+    }
+
+    /* Label & Widget Text */
+    label, [data-testid="stWidgetLabel"] p {
+        color: #f1f5f9 !important; /* Slate 100 */
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* Selectbox & Input Text */
+    .stSelectbox div[data-baseweb="select"] > div {
+        color: #ffffff !important;
+        background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    /* Slider value text */
+    [data-testid="stThumbValue"] {
+        color: #00d2ff !important;
+        font-weight: 700 !important;
+    }
+
+    /* File Uploader Text */
+    [data-testid="stFileUploader"] section div {
+        color: #cbd5e1 !important;
+    }
+    
+    /* Metrics */
+    [data-testid="stMetricLabel"] {
+        color: #94a3b8 !important;
+        font-weight: 600 !important;
+    }
+    [data-testid="stMetricValue"] {
+        color: #00d2ff !important;
+    }
+
+    /* Override Sidebar specific dimming */
+    section[data-testid="stSidebar"] .stMarkdown p {
+        color: #ffffff !important;
+        font-size: 1rem !important;
     }
 
     /* Header Styling */
@@ -56,63 +139,24 @@ st.markdown("""
     }
 
     .sub-title {
-        color: #00d2ff;
-        font-weight: 600;
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
+        color: #00d2ff !important; 
+        font-weight: 700;
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
     }
 
     .sub-header {
-        font-family: 'Inter', sans-serif;
-        font-weight: 300;
-        font-size: 1.1rem;
-        color: #94a3b8;
+        font-weight: 400;
+        font-size: 1.15rem;
+        color: #cbd5e1 !important; 
         margin-bottom: 2.5rem;
-        max-width: 600px;
+        max-width: 800px;
+        line-height: 1.6;
     }
 
-    /* Card Styling for Results */
-    .prediction-card {
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 20px;
-        padding: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(10px);
-        margin-top: 25px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    /* File Uploader Customization */
-    .stFileUploader section {
-        background-color: rgba(255, 255, 255, 0.01) !important;
-        border: 2px dashed rgba(0, 210, 255, 0.5) !important;
-        border-radius: 15px !important;
-        padding: 2rem !important;
-    }
-
-    /* Button Styling */
-    .stButton>button {
-        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        padding: 0.8rem 2.5rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        width: 100%;
-    }
-
-    .stButton>button:hover {
-        transform: scale(1.02);
-        box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
-    }
-    
-    /* Metrics */
-    [data-testid="stMetricValue"] {
-        color: #00d2ff;
-        font-size: 2.5rem !important;
+    /* Success/Info boxes text */
+    .stAlert div {
+        color: #ffffff !important;
     }
 
     /* Center Logo */
